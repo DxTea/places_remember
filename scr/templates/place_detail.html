@@ -1,0 +1,62 @@
+<!-- place_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Редактирование места</h1>
+    <div id="map" style="width: 100%; height: 400px;"></div>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="place_location">Местоположение</label>
+            <input type="text" class="form-control" id="place_location" name="location"
+                   value="{{ place.location }}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="place_title">Название места</label>
+            <input type="text" class="form-control {% if form.errors.title %}is-invalid{% endif %}" id="place_title"
+                   name="title" value="{{ place.title }}">
+            {% if form.errors.title %}
+            <div class="invalid-feedback">{{ form.errors.title }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="place_comment">Комментарий</label>
+            <input type="text" class="form-control {% if form.errors.title %}is-invalid{% endif %}" id="place_comment"
+                   name="comment" value="{{ place.comment }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a href="{% url 'places:delete_place' place.slug %}" class="btn btn-danger ml-2">Удалить</a>
+        <a href="/" class="btn btn-secondary ml-2">Назад</a>
+    </form>
+</div>
+
+<script src="https://api-maps.yandex.ru/2.1/?apikey={{ api_key }}&lang=ru_RU" type="text/javascript"></script>
+<script type="text/javascript">
+    ymaps.ready(init);
+
+    function init() {
+        var myMap = new ymaps.Map('map', {
+            center: [{{ place.location }}],
+            zoom: 10
+        });
+
+        var placemark = new ymaps.Placemark([{{ place.location }}], {
+            draggable: true
+        });
+        myMap.geoObjects.add(placemark);
+
+        placemark.events.add('dragend', function (e) {
+            var coords = placemark.geometry.getCoordinates();
+            document.getElementById('place_location').value = coords.join(', ');
+        });
+
+        myMap.events.add('click', function (e) {
+            var coords = e.get('coords');
+            placemark.geometry.setCoordinates(coords);
+            document.getElementById('place_location').value = coords.join(', ');
+        });
+    }
+
+</script>
+{% endblock %}

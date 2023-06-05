@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Добавить новое место</h1>
+    <div id="map" style="width: 100%; height: 400px;"></div>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="place_location">Местоположение</label>
+            <input type="text" class="form-control" id="place_location" name="location"
+                   placeholder="Поставьте точку на карте" readonly>
+            {% if form.location.errors %}
+            <small class="form-text text-danger">{{ form.location.errors.0 }}</small>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="place_title">Название места</label>
+            <input type="text" class="form-control" id="place_title" name="title" placeholder="Название места">
+            {% if form.title.errors %}
+            <small class="form-text text-danger">{{ form.title.errors.0 }}</small>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="place_comment">Комментарий</label>
+            <textarea class="form-control" id="place_comment" name="comment"
+                      placeholder="Комментарий к месту"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+        <a href="/" class="btn btn-secondary">Назад</a>
+    </form>
+</div>
+
+<script src="https://api-maps.yandex.ru/2.1/?apikey={{api_key}}&lang=ru_RU" type="text/javascript"></script>
+<script type="text/javascript">
+        ymaps.ready(init);
+
+        function init() {
+            var myMap = new ymaps.Map('map', {
+                center: [55.76, 37.64],
+                zoom: 10
+            });
+
+            var placemark;
+
+            myMap.events.add('click', function (e) {
+                var coords = e.get('coords');
+                if (placemark) {
+                    myMap.geoObjects.remove(placemark);
+                }
+                placemark = new ymaps.Placemark(coords);
+                myMap.geoObjects.add(placemark);
+                document.getElementById('place_location').value = coords.join(', ');
+            });
+        }
+
+</script>
+{% endblock %}

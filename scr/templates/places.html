@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center mt-4">
+    <h1>Мои места</h1>
+    <div class="container mt-4" id="places">
+        {% for place in profile_places %}
+        <div class="card text-center border-muted">
+            <div class="card-body">
+                <h5 class="card-header">{{ place.title }}</h5>
+                <p class="text-muted">{{ place.location }}</p>
+                <p class="card-text">{{ place.comment }}</p>
+                <a href="{{place.slug}}" class="btn btn-primary btn-details">Изменить</a>
+                <a href="{% url 'places:delete_place' place.slug %}" class="btn btn-danger">Удалить</a>
+            </div>
+        </div>
+        <p></p>
+        {% endfor %}
+    </div>
+
+    {% if not profile_places %}
+    <div class="text-center mt-4">
+        <h3>У вас нет сохраненных мест, {{user.first_name}}</h3>
+    </div>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <a class="btn btn-primary" href="add_place/">Добавить место</a>
+    </div>
+</div>
+{% endblock %}

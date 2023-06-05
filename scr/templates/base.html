@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Places Remember - {% block title %}{% endblock %}</title>
+    <!-- Подключение стилей Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<style>
+    @media (max-width: 767px) {
+  .navbar-nav.ml-auto .nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .navbar-nav.ml-auto .nav-item .navbar-text {
+    margin-right: 10px;
+  }
+
+  .navbar-nav.ml-auto .nav-item .btn {
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+  }
+}
+
+</style>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Places Remember</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            {% if request.user.is_authenticated %}
+            <li class="nav-item mr-2 d-flex">
+                    <span class="navbar-text">
+                        Пользователь:  {{ user.first_name }} {{ user.last_name }}
+                    </span>
+            </li>
+            <li class="nav-item d-flex">
+                <img src="{{ user.profile.avatar }}" id="user_avatar" width="40" height="40" class="mr-2">
+            </li>
+            <li class="nav-item ml-2 d-flex">
+                <a class="nav-link btn btn-primary text-white" href="/logout">Выход</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<!-- Основное содержимое страницы -->
+{% block content %}{% endblock %}
+
+<!-- Подключение скриптов Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<footer class="py-3 my-4">
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+    </ul>
+    <p class="text-center text-muted">&copy; 2023 DexTea</p>
+</footer>
+</body>
+</html>
