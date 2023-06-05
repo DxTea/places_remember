@@ -3,7 +3,7 @@
 ## Запуск:
 * Установить `python 3.11` и `pipenv` (`pip install pipenv`) 
 * Установить зависимости
-* Создать файл `.env` в `/src` по примеру `.env.example`
+* Создать файл `.env` в `/scr` по примеру `.env.example`
 * Применить миграции
 * Создать SuperUser
 * Запустить сервер : `python manage.py runserver`
