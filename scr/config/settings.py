@@ -26,7 +26,6 @@ env = environ.Env(
     DB_PASSWORD=(str, ""),
     DB_HOST=(str, ""),
     DB_PORT=(str, ""),
-    ALLOWED_HOSTS=(list, ""),
     SOCIAL_AUTH_VK_OAUTH2_KEY=(str, ""),
     SOCIAL_AUTH_VK_OAUTH2_SECRET=(str, ""),
     YANDEX_API_KEY=(str, "")
@@ -38,7 +37,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = env('ALLOWED_HOSTS')
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 # Application definition
 
