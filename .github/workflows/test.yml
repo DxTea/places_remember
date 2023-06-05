@@ -7,7 +7,14 @@ on:
   pull_request:
     branches:
       - main
-
+env:
+    SECRET_KEY: django-insecure-bup5*^7o_&&)ci431pj))#g!f$2x%@0cetpbjjxvjpeto!5k&l
+    DB_ENGINE: django.db.backends.postgresql_psycopg2
+    DB_NAME: db_shop
+    DB_USER: postgres
+    DB_PASSWORD: 258058
+    DB_HOST: localhost
+    DB_PORT: 5432
 jobs:
   test:
     runs-on: ubuntu-latest
