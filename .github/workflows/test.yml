@@ -19,7 +19,7 @@ jobs:
     - name: Load environment variables from .env
       run: |
         echo "Loading environment variables..."
-        echo "source .env.example" >> $GITHUB_ENV
+        echo "source .env" >> $GITHUB_ENV
 
     - name: Set up Python
       uses: actions/setup-python@v2
