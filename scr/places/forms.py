@@ -1,7 +1,9 @@
+import re
 from django import forms
 from .models import Place
 from django.core.exceptions import ValidationError
-
+from django.db import models
+from django.utils.text import slugify
 
 class AddPlaceForm(forms.ModelForm):
     class Meta:
@@ -10,10 +12,19 @@ class AddPlaceForm(forms.ModelForm):
 
     def clean_title(self):
         title = self.cleaned_data['title']
+        slug = slugify(title, allow_unicode=True)
+
         if self.instance.pk is None or title != self.initial['title']:
-            place_exists = Place.objects.filter(title=title).exists()
+            place_exists = Place.objects.filter(
+                models.Q(title=title) | models.Q(slug=slug)
+            ).exists()
+
             if place_exists:
-                raise ValidationError('Место с таким названием уже существует.')
+                raise ValidationError('Место с таким названием или слагом уже существует.')
+
+        if not re.match(r'^[\w\s.-]+$', title):
+            raise ValidationError('Название места содержит недопустимые символы.')
+
         return title
 
     def save_form(self, profile):

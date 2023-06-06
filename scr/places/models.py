@@ -3,6 +3,8 @@ from django.shortcuts import reverse
 from users.models import Profile
 from django.utils.text import slugify
 from transliterate import translit
+import re
+from datetime import datetime
 
 
 class Place(models.Model):
@@ -16,7 +18,10 @@ class Place(models.Model):
         app_label = 'places'
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(translit(self.title.__str__(), "ru", reversed=True), allow_unicode=True) + str(self.pk)
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+        slug = slugify(translit(self.title.__str__(), "ru", reversed=True), allow_unicode=True)
+        slug = re.sub(r'[^a-zA-Z0-9_-]', '', slug)  # Исключаем специальные символы
+        self.slug = f"{slug}-{self.pk}-{timestamp}"
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
